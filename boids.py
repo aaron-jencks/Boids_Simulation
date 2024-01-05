@@ -57,7 +57,9 @@ class Boid:
     def simulate_boid_rules(self, boids: BinaryTree, settings):
         # make a list of nearby boids
         edist = self.pos.length_squared()
-        nearby_boids = boids.find_interval(edist - self.view_distance, edist + self.view_distance)
+        vds = self.view_distance**2
+        nearby_boids = [b for b in boids.find_interval(edist - self.view_distance, edist + self.view_distance)
+                        if self.dist_not_squared(self.pos, b.boid.pos) < vds]
         for b in nearby_boids:
             if settings.can_align:
                 self.dir += b.boid.dir / settings.direction
