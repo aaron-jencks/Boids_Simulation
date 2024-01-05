@@ -30,6 +30,7 @@ def setup_args() -> argparse.ArgumentParser:
     parser.add_argument('-w', '--width', default=1500, type=int, help='the width of the window in pixels')
     parser.add_argument('-f', '--fps', default=60, type=int, help='the nominal framerate to shoot for')
     parser.add_argument('-s', '--speed', default=10, type=int, help='the speed of the boids')
+    parser.add_argument('-g', '--rngseed', default=0, type=int, help='when not 0 specifies the seed to use for the random number generator')
     return parser
 
 
@@ -64,6 +65,10 @@ def draw_window(settings, screen, boids: List[BoidNode]):
 if __name__ == '__main__':
     parser = setup_args()
     settings = parser.parse_args()
+
+    # gotta do this before everything else
+    if settings.rngseed != 0:
+        random.seed(settings.rngseed)
 
     # initialize pygame
     pygame.init()
